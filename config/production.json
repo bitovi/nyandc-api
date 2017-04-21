@@ -1,4 +1,5 @@
 {
-  "host": "nyandc-api-app.feathersjs.com",
-  "port": "PORT"
+  "host": "nyandc-api.herokuapp.com",
+  "port": "PORT",
+  "mongodb": "MONGODB_URI"
 }
