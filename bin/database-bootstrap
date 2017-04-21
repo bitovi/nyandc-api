@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const mongoose = require('mongoose');
+const app = require('../src/app');
+const stores = require('./fixtures/stores.json');
+
+mongoose.connection.on('open', function() {
+  let storePromises = stores.map(store => {
+    console.log(`Inserting ${store.storeName}`);
+
+    return app.service('stores').create(store);
+  });
+
+  Promise.all(storePromises)
+    .then(results => {
+      console.log('Imported:', results);
+      process.exit(0);
+    })
+    .catch(e => {
+      console.error(typeof e.toJSON === 'function' ? e.toJSON() : e.message);
+      console.error(e.stack);
+      process.exit(1);
+    });
+});

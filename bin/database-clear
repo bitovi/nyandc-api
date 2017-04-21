@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const mongoose = require('mongoose');
+const app = require('../src/app');
+const db = app.get('mongodb');
+
+if(!(db.includes('localhost') || db.includes('127.0.0.1'))) {
+  console.error('You can only clear a database on `localhost`');
+  process.exit(1);
+} else {
+  console.log('Opening connection to', db, '...');
+  mongoose.connection.on('open', () => {
+    console.log('\t', 'Dropping database', db, '...');
+    mongoose.connection.db.dropDatabase(err => {
+      if(err) {
+        console.error(err);
+        process.exit(1);
+      } else {
+        console.log('\t\t', 'Dropped database', db);
+        process.exit(0);
+      }
+    });
+  });
+}
