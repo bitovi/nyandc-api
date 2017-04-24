@@ -1,10 +1,12 @@
 const assert = require('assert');
 const findStores = require('../../src/hooks/find-stores');
 
-describe.skip('\'find-stores\' hook', () => {
+describe('\'find-stores\' hook', () => {
   it('runs the hook', () => {
     // A mock hook object
-    const mock = {};
+    const mock = {
+      params: {}
+    };
     // Initialize our hook with no options
     const hook = findStores();
 
