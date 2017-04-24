@@ -4,7 +4,7 @@ const _omit = require('lodash/omit');
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {
-    const { query } = hook.params;
+    const { query = {} } = hook.params;
 
     if (query.lon && query.lat) {
       hook.params.query = Object.assign(_omit(hook.params.query, 'lon', 'lat'), {
@@ -22,5 +22,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
         }
       });
     }
+
+    return Promise.resolve(hook);
   };
 };
