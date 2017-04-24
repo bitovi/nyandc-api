@@ -10,6 +10,9 @@ mongoose.connection.on('open', function() {
   let storePromises = stores.map(store => {
     console.log(`Inserting ${store.storeName}`);
 
+    // also store location as a geoJSON object
+    store.location = [ store.longitude , store.latitude ];
+
     return app.service('stores').create(store);
   });
 

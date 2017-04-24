@@ -15,6 +15,10 @@ module.exports = function (app) {
     dayHour1: { type: String },
     latitude: { type: Number, required: true },
     longitude: { type: Number, required: true },
+    location: {
+      type: [ Number ],
+      index: '2dsphere'
+    },
     postalCode: { type: String },
     City: { type: String },
     Mile: { type: Number },

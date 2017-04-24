@@ -1,9 +1,10 @@
+const findStores = require('../../hooks/find-stores');
 const { authenticate } = require('feathers-authentication').hooks;
 
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [ findStores() ],
     get: [],
     create: [authenticate('jwt')],
     update: [authenticate('jwt')],
