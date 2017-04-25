@@ -23,10 +23,17 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
             // update inventory
             return hook.app.service('inventory').patch(stock._id, {
               available: stock.available - line.quantity
+            })
+            // mark something happened with product
+            .then(() => {
+              return hook.app.service('products').patch(line.product, {
+                updatedAt: Date.now()
+              });
             });
           });
         });
-    })).then(() => {
+    }))
+    .then(() => {
       if (hook.result) {
         hook.result.lines = lines;
       }

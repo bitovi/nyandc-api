@@ -1,3 +1,4 @@
+const appendDailySales = require('../../hooks/append-daily-sales');
 const { authenticate } = require('feathers-authentication').hooks;
 
 module.exports = {
@@ -13,11 +14,11 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
-    get: [],
+    find: [ appendDailySales() ],
+    get: [ appendDailySales() ],
     create: [],
     update: [],
-    patch: [],
+    patch: [ appendDailySales() ],
     remove: []
   },
 

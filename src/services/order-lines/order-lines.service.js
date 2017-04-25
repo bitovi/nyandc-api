@@ -7,12 +7,10 @@ const filters = require('./order-lines.filters');
 module.exports = function () {
   const app = this;
   const Model = createModel(app);
-  const paginate = app.get('paginate');
 
   const options = {
     name: 'order-lines',
-    Model,
-    paginate
+    Model
   };
 
   // Initialize our service with any options it requires
