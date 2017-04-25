@@ -7,27 +7,32 @@ const app = require('../src/app');
 const stores = require('./fixtures/stores.json');
 
 mongoose.connection.on('open', function() {
-  let bootstrapPromises = stores.map(store => {
-    console.log(`Inserting ${store.storeName}`);
+  app.service('products').create({
+    baseProductId: 'A-prod10170024',
+    name: 'Off-The-Shoulder Romper',
+    description: 'An off-the-shoulder silhouette makes a flirty style statement on our simple-yet-sophisticated romper.'
+  })
+    .then(product => {
+      return Promise.all(stores.map(store => {
+        console.log(`Inserting ${store.storeName}`);
 
-    // also store location as a geoJSON object
-    store.location = [ store.longitude , store.latitude ];
+        // also store location as a geoJSON object
+        store.location = [ store.longitude , store.latitude ];
 
-    return app.service('stores').create(store);
-  });
+        return app.service('stores').create(store)
+          .then(store => {
+            console.log(`Inserting inventory for ${store.storeName}`);
 
-  console.log(`Inserting Off-The-Shoulder Romper`);
-  bootstrapPromises.push(
-    app.service('products').create({
-      baseProductId: 'A-prod10170024',
-      name: 'Off-The-Shoulder Romper',
-      description: 'An off-the-shoulder silhouette makes a flirty style statement on our simple-yet-sophisticated romper.'
-    })
-  );
-
-  Promise.all(bootstrapPromises)
+            return app.service('inventory').create({
+              store,
+              product,
+              available: Math.floor(Math.random() * 20)
+            });
+          });
+        }))
+      })
     .then(results => {
-      console.log('Imported:', results);
+      console.log(`Imported ${results.length} items`);
       process.exit(0);
     })
     .catch(e => {
