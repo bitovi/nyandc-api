@@ -7,7 +7,7 @@ const app = require('../src/app');
 const stores = require('./fixtures/stores.json');
 
 mongoose.connection.on('open', function() {
-  let storePromises = stores.map(store => {
+  let bootstrapPromises = stores.map(store => {
     console.log(`Inserting ${store.storeName}`);
 
     // also store location as a geoJSON object
@@ -16,7 +16,16 @@ mongoose.connection.on('open', function() {
     return app.service('stores').create(store);
   });
 
-  Promise.all(storePromises)
+  console.log(`Inserting Off-The-Shoulder Romper`);
+  bootstrapPromises.push(
+    app.service('products').create({
+      baseProductId: 'A-prod10170024',
+      name: 'Off-The-Shoulder Romper',
+      description: 'An off-the-shoulder silhouette makes a flirty style statement on our simple-yet-sophisticated romper.'
+    })
+  );
+
+  Promise.all(bootstrapPromises)
     .then(results => {
       console.log('Imported:', results);
       process.exit(0);
