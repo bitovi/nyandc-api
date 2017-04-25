@@ -26,7 +26,7 @@ mongoose.connection.on('open', function() {
             return app.service('inventory').create({
               store,
               product,
-              available: Math.floor(Math.random() * 20)
+              available: Math.floor(Math.random() * 50)
             });
           });
         }))

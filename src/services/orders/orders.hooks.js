@@ -1,3 +1,4 @@
+const placeOrder = require('../../hooks/place-order');
 const { authenticate } = require('feathers-authentication').hooks;
 
 module.exports = {
@@ -5,9 +6,9 @@ module.exports = {
     all: [],
     find: [authenticate('jwt')],
     get: [authenticate('jwt')],
-    create: [],
-    update: [],
-    patch: [],
+    create: [ ],
+    update: [authenticate('jwt')],
+    patch: [authenticate('jwt')],
     remove: [authenticate('jwt')]
   },
 
@@ -15,7 +16,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [ placeOrder() ],
     update: [],
     patch: [],
     remove: []
